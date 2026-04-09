@@ -5,40 +5,40 @@
 
 /* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-  /* Color Palette — Dark Mode (default) */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #111827;
-  --bg-card: #1a1f35;
-  --bg-card-hover: #222845;
-  --bg-input: #161c30;
-  --bg-sidebar: #0d1224;
-  --bg-tooltip: #252b42;
-  --bg-overlay: rgba(0, 0, 0, 0.6);
+  /* Color Palette — Enterprise Dark Mode */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: #0a0a0a;
+  --bg-card-hover: #141414;
+  --bg-input: #141414;
+  --bg-sidebar: #050505;
+  --bg-tooltip: #1f1f1f;
+  --bg-overlay: rgba(0, 0, 0, 0.8);
 
-  --border-primary: rgba(99, 102, 241, 0.15);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(99, 102, 241, 0.35);
+  --border-primary: #27272a;
+  --border-subtle: #1f1f22;
+  --border-hover: #3f3f46;
 
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-accent: #818cf8;
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-accent: #ffffff;
 
-  /* Accent & Status Colors */
-  --accent-primary: #6366f1;
-  --accent-primary-hover: #818cf8;
-  --accent-secondary: #06b6d4;
-  --accent-gradient: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
-  --accent-gradient-soft: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(6,182,212,0.15) 100%);
+  /* Accent & Status Colors (Crisp data colors) */
+  --accent-primary: #0070f3;
+  --accent-primary-hover: #3b82f6;
+  --accent-secondary: #17c964;
+  --accent-gradient: linear-gradient(135deg, #0070f3 0%, #00c969 100%);
+  --accent-gradient-soft: rgba(0, 112, 243, 0.1);
 
-  --status-success: #22c55e;
-  --status-success-bg: rgba(34, 197, 94, 0.12);
-  --status-warning: #f59e0b;
-  --status-warning-bg: rgba(245, 158, 11, 0.12);
-  --status-danger: #ef4444;
-  --status-danger-bg: rgba(239, 68, 68, 0.12);
-  --status-info: #3b82f6;
-  --status-info-bg: rgba(59, 130, 246, 0.12);
+  --status-success: #17c964;
+  --status-success-bg: rgba(23, 201, 100, 0.1);
+  --status-warning: #f5a623;
+  --status-warning-bg: rgba(245, 166, 35, 0.1);
+  --status-danger: #f31260;
+  --status-danger-bg: rgba(243, 18, 96, 0.1);
+  --status-info: #0070f3;
+  --status-info-bg: rgba(0, 112, 243, 0.1);
 
   /* Typography */
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -52,19 +52,19 @@
   --space-xl: 32px;
   --space-2xl: 48px;
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* Radius (Tight & Professional) */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-  --shadow-glow: 0 0 20px rgba(99,102,241,0.15);
-  --shadow-glow-accent: 0 0 30px rgba(99,102,241,0.25);
+  /* Shadows (No glowing) */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.8);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.9);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,1);
+  --shadow-glow: none;
+  --shadow-glow-accent: none;
 
   /* Layout */
   --sidebar-width: 260px;
@@ -76,14 +76,14 @@
   --transition-base: 250ms ease;
   --transition-slow: 400ms ease;
 
-  /* Chart colors */
-  --chart-1: #6366f1;
-  --chart-2: #06b6d4;
-  --chart-3: #22c55e;
-  --chart-4: #f59e0b;
-  --chart-5: #ef4444;
-  --chart-6: #a855f7;
-  --chart-7: #ec4899;
+  /* Chart colors (Sharp high contrast) */
+  --chart-1: #0070f3;
+  --chart-2: #17c964;
+  --chart-3: #f5a623;
+  --chart-4: #f31260;
+  --chart-5: #71717a;
+  --chart-6: #9353d3;
+  --chart-7: #ffffff;
 }
 
 /* Light Theme */
@@ -526,6 +526,79 @@ input:focus, select:focus, textarea:focus {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideUpFade {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flowPacket {
+  0% { left: 0%; opacity: 0; transform: scale(0.5); }
+  10% { opacity: 1; transform: scale(1); }
+  90% { opacity: 1; transform: scale(1); }
+  100% { left: 100%; opacity: 0; transform: scale(0.5); }
+}
+
+/* --- CN Visualization --- */
+.cn-viz {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-xl) var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.cn-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.cn-node-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.cn-node-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.cn-link {
+  flex-grow: 1;
+  height: 2px;
+  background: var(--border-subtle);
+  position: relative;
+  margin: 0 var(--space-md);
+  z-index: 1;
+  transform: translateY(-12px);
+}
+
+.cn-packet {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-secondary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-secondary);
+  animation: flowPacket 2s linear infinite;
+}
+.cn-packet.delay-1 { animation-delay: 0.6s; }
+.cn-packet.delay-2 { animation-delay: 1.2s; }
+
 /* --- Dashboard Grid --- */
 .dashboard-grid {
   display: grid;
@@ -546,7 +619,13 @@ input:focus, select:focus, textarea:focus {
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
+  animation: slideUpFade 0.4s ease-out both;
 }
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.1s; }
+.stat-card:nth-child(3) { animation-delay: 0.15s; }
+.stat-card:nth-child(4) { animation-delay: 0.2s; }
 
 .stat-card::before {
   content: '';
@@ -629,7 +708,11 @@ input:focus, select:focus, textarea:focus {
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: all var(--transition-base);
+  animation: slideUpFade 0.5s ease-out both;
 }
+.panel:nth-child(5) { animation-delay: 0.25s; }
+.panel:nth-child(6) { animation-delay: 0.3s; }
+.panel:nth-child(7) { animation-delay: 0.35s; }
 
 .panel:hover {
   border-color: var(--border-hover);
@@ -732,56 +815,144 @@ input:focus, select:focus, textarea:focus {
 .btn-sm { padding: 5px 10px; font-size: 0.75rem; }
 .btn-lg { padding: 12px 24px; font-size: 0.95rem; }
 
-/* --- Speed Test Gauge --- */
+/* --- Speed Test Overlay & Gauge --- */
+.speed-test-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.speed-test-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.speed-test-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  width: 90%;
+  max-width: 600px;
+  padding: var(--space-2xl) var(--space-xl);
+  box-shadow: var(--shadow-lg), var(--shadow-glow-accent);
+  position: relative;
+  text-align: center;
+  transform: translateY(0) scale(1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.speed-test-overlay.hidden .speed-test-modal {
+  transform: translateY(30px) scale(0.95);
+}
+
+.btn-close-modal {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+}
+.btn-close-modal:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
 .gauge-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-xl);
+  padding: var(--space-md);
+}
+
+.speed-test-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xl);
+  color: var(--text-primary);
+}
+.speed-test-title svg {
+  color: var(--accent-primary);
 }
 
 .gauge-wrapper {
   position: relative;
-  width: 240px;
-  height: 240px;
+  width: 300px;
+  height: 180px; /* Half height for 180deg */
+  margin-bottom: var(--space-lg);
+  overflow: hidden;
 }
 
 .gauge-svg {
   width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
+  height: 200%; /* Make fully square internally, crop bottom half via wrapper */
 }
 
 .gauge-bg {
-  fill: none;
   stroke: var(--border-subtle);
-  stroke-width: 12;
 }
 
 .gauge-fill {
-  fill: none;
   stroke: url(#gaugeGradient);
-  stroke-width: 12;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 0.1s linear;
+  transition: stroke-dashoffset 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ping-radar {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 120px;
+  height: 120px;
+  z-index: 5;
+}
+.radar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  opacity: 0;
+  animation: radarPulse 1.5s ease-out infinite;
+}
+.radar-ring.r2 { animation-delay: 0.5s; }
+.radar-ring.r3 { animation-delay: 1s; }
+
+@keyframes radarPulse {
+  0% { transform: scale(0); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
 .gauge-center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .gauge-value {
   font-size: 3rem;
   font-weight: 800;
   line-height: 1;
-  background: var(--accent-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .gauge-unit {
@@ -1139,6 +1310,112 @@ input:focus, select:focus, textarea:focus {
   .speed-results { grid-template-columns: 1fr; }
   .hop-row { font-size: 0.7rem; grid-template-columns: 30px 1fr 1fr 1fr; }
 }
+
+/* --- Dynamic Speed Test TCP Live Visualizer --- */
+.cn-dynamic-viz {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: var(--space-xl);
+  opacity: 0.3;
+  transition: opacity 0.4s var(--transition-bounce);
+  filter: grayscale(1);
+}
+.cn-dynamic-viz.active {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.cn-dynamic-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.cn-dynamic-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: all 0.3s;
+}
+
+.cn-dynamic-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.cn-dynamic-track {
+  flex-grow: 1;
+  height: 2px;
+  background: var(--border-subtle);
+  margin: 0 var(--space-md);
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+  transform: translateY(-8px);
+}
+
+.cn-dyn-packet {
+  position: absolute;
+  top: -1px;
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  opacity: 0;
+}
+
+/* Phase: Download (Server to Client / Right to Left) */
+.cn-dynamic-viz.phase-download .cn-dynamic-icon {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+.cn-dynamic-viz.phase-download .cn-dyn-packet {
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-primary);
+  animation: dlStream 0.6s linear infinite;
+}
+
+@keyframes dlStream {
+  0% { left: 100%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: -10px; opacity: 0; }
+}
+
+/* Phase: Upload (Client to Server / Left to Right) */
+.cn-dynamic-viz.phase-upload .cn-dynamic-icon {
+  border-color: var(--accent-secondary);
+  color: var(--accent-secondary);
+}
+.cn-dynamic-viz.phase-upload .cn-dyn-packet {
+  background: var(--accent-secondary);
+  box-shadow: 0 0 10px var(--accent-secondary);
+  animation: ulStream 0.6s linear infinite;
+}
+
+@keyframes ulStream {
+  0% { left: -10px; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* Staggers for constant stream */
+.cn-dyn-packet.p1 { animation-delay: 0.0s; }
+.cn-dyn-packet.p2 { animation-delay: 0.12s; }
+.cn-dyn-packet.p3 { animation-delay: 0.24s; }
+.cn-dyn-packet.p4 { animation-delay: 0.36s; }
+.cn-dyn-packet.p5 { animation-delay: 0.48s; }
+
+
 
 /* --- Utility --- */
 .hidden { display: none !important; }

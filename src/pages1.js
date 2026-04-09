@@ -27,7 +27,7 @@ export function renderDashboard(snap) {
       <div class="stat-card-label">Upload (Mbps)</div>
       <div class="stat-card-sparkline"><canvas id="spark-ul"></canvas></div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="stat-lat">
       <div class="stat-card-header">
         <div class="stat-card-icon">${icons.latency}</div>
         <span class="stat-card-badge neutral">${fmt(snap.latency.avg)} avg</span>
@@ -36,7 +36,7 @@ export function renderDashboard(snap) {
       <div class="stat-card-label">Latency (ms)</div>
       <div class="stat-card-sparkline"><canvas id="spark-lat"></canvas></div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="stat-pl">
       <div class="stat-card-header">
         <div class="stat-card-icon">${icons.packet}</div>
         <span class="stat-card-badge ${snap.packetLoss.current < 1 ? 'up' : 'down'}">${snap.packetLoss.current < 1 ? 'Healthy' : 'Elevated'}</span>
@@ -77,43 +77,47 @@ export function renderDashboard(snap) {
         </table>
       </div>
     </div>
-  </div>`;
-}
 
-export function renderSpeedTest() {
-  return `
-  <div class="dashboard-grid">
-    <div class="panel" style="grid-column: span 8;">
+    <div class="panel grid-col-2">
       <div class="panel-header">
-        <div class="panel-title">${icons.speed} Speed Test</div>
-        <div class="panel-actions">
-          <button class="btn btn-primary" id="btn-run-speed">${icons.play} Run Test</button>
-        </div>
+        <div class="panel-title">${icons.activity} Network Flow & Speed</div>
       </div>
-      <div class="panel-body">
-        <div class="gauge-container" id="speed-gauge-area">
-          <div class="gauge-wrapper">
-            <svg class="gauge-svg" viewBox="0 0 200 200">
-              <defs><linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
-              <circle class="gauge-bg" cx="100" cy="100" r="85" />
-              <circle class="gauge-fill" id="gauge-arc" cx="100" cy="100" r="85" stroke-dasharray="534" stroke-dashoffset="534" />
-            </svg>
-            <div class="gauge-center">
-              <div class="gauge-value" id="gauge-val">0</div>
-              <div class="gauge-unit">Mbps</div>
-            </div>
+      <div class="panel-body" style="display: flex; flex-direction: column; justify-content: center; height: 100%;">
+        <div class="cn-viz">
+          <div class="cn-node">
+            <div class="cn-node-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+            <div class="cn-node-label">Client</div>
           </div>
-          <div class="gauge-label" id="gauge-phase">Press Run Test to begin</div>
-          <div class="speed-results" id="speed-results" style="display:none;">
-            <div class="speed-result-item"><div class="speed-result-value" id="res-dl">—</div><div class="speed-result-label">Download</div></div>
-            <div class="speed-result-item"><div class="speed-result-value" id="res-ul">—</div><div class="speed-result-label">Upload</div></div>
-            <div class="speed-result-item"><div class="speed-result-value" id="res-ping">—</div><div class="speed-result-label">Ping</div></div>
+          <div class="cn-link">
+            <div class="cn-packet"></div>
+            <div class="cn-packet delay-1"></div>
+            <div class="cn-packet delay-2"></div>
           </div>
+          <div class="cn-node">
+            <div class="cn-node-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg></div>
+            <div class="cn-node-label">Router</div>
+          </div>
+          <div class="cn-link">
+            <div class="cn-packet delay-1"></div>
+            <div class="cn-packet delay-2"></div>
+            <div class="cn-packet"></div>
+          </div>
+          <div class="cn-node">
+            <div class="cn-node-icon"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg></div>
+            <div class="cn-node-label">Server</div>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 10px;">
+          <button id="btn-dashboard-speedtest" class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 32px;">
+            ${icons.speed} Run Speed Test
+          </button>
         </div>
       </div>
     </div>
+
   </div>`;
 }
+
 
 export function renderBandwidth(snap) {
   return `

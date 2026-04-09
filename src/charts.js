@@ -8,7 +8,7 @@ const textColor = () => isDark() ? '#94a3b8' : '#64748b';
 const baseOptions = (title = '') => ({
   responsive: true,
   maintainAspectRatio: false,
-  animation: { duration: 600, easing: 'easeOutQuart' },
+  animation: { duration: 1500, easing: 'easeOutQuart' },
   plugins: {
     legend: { display: false },
     title: title ? { display: true, text: title, color: textColor(), font: { size: 13, weight: 600 } } : { display: false },
@@ -37,7 +37,7 @@ export function createLineChart(ctx, label, data, color1 = '#6366f1', color2 = '
         label, data, fill: true,
         borderColor: color1, backgroundColor: gradient,
         borderWidth: 2, pointRadius: 0, pointHoverRadius: 4,
-        tension: 0.4,
+        tension: 0.1,
       }],
     },
     options: baseOptions(),
@@ -54,8 +54,8 @@ export function createDualLineChart(ctx, label1, data1, label2, data2) {
     data: {
       labels: data1.map((_, i) => i + 1),
       datasets: [
-        { label: label1, data: data1, fill: true, borderColor: '#6366f1', backgroundColor: g1, borderWidth: 2, pointRadius: 0, tension: 0.4 },
-        { label: label2, data: data2, fill: true, borderColor: '#06b6d4', backgroundColor: g2, borderWidth: 2, pointRadius: 0, tension: 0.4 },
+        { label: label1, data: data1, fill: true, borderColor: '#6366f1', backgroundColor: g1, borderWidth: 2, pointRadius: 0, tension: 0.1 },
+        { label: label2, data: data2, fill: true, borderColor: '#06b6d4', backgroundColor: g2, borderWidth: 2, pointRadius: 0, tension: 0.1 },
       ],
     },
     options: { ...baseOptions(), plugins: { ...baseOptions().plugins, legend: { display: true, labels: { color: textColor(), usePointStyle: true, pointStyle: 'circle', padding: 16, font: { size: 11 } } } } },

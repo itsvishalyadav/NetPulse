@@ -80,6 +80,88 @@
     </main>
   </div>
 
+  <!-- Speed Test Overlay -->
+  <div id="speed-test-overlay" class="speed-test-overlay hidden">
+    <div class="speed-test-modal">
+      <button class="btn-close-modal" id="btn-close-speed" aria-label="Close speed test">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="speed-test-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28">
+           <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/><path d="M12 6v6l4 2"/>
+        </svg>
+        Speed Test
+      </div>
+
+      <div class="gauge-container" id="speed-gauge-area">
+        <div class="gauge-wrapper">
+          <svg class="gauge-svg" viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop id="gauge-grad-start" offset="0%" stop-color="#6366f1"/>
+                <stop id="gauge-grad-end" offset="100%" stop-color="#06b6d4"/>
+              </linearGradient>
+            </defs>
+            <path class="gauge-bg" fill="none" stroke-width="12" d="M 15 100 A 85 85 0 0 1 185 100" />
+            <path class="gauge-fill" id="gauge-arc" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="267" stroke-dashoffset="267" d="M 15 100 A 85 85 0 0 1 185 100" />
+            
+            <g id="gauge-needle" style="transform-origin: 100px 100px; transform: rotate(-90deg); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);">
+              <polygon points="98,105 102,105 100,20" fill="var(--text-primary)" />
+              <circle cx="100" cy="100" r="10" fill="var(--text-primary)" />
+              <circle cx="100" cy="100" r="4" fill="var(--bg-card)" />
+            </g>
+          </svg>
+          
+          <div class="ping-radar" id="ping-radar" style="display:none;">
+            <div class="radar-ring r1"></div>
+            <div class="radar-ring r2"></div>
+            <div class="radar-ring r3"></div>
+          </div>
+
+          </div>
+        </div>
+        
+        <div class="gauge-center" style="margin-top: -10px; margin-bottom: 20px; z-index: 10; position: relative;">
+          <div class="gauge-value" id="gauge-val">0</div>
+          <div class="gauge-unit">Mbps</div>
+        </div>
+        
+        <div class="gauge-label" id="gauge-phase">Ready</div>
+        <button class="btn btn-primary" id="btn-run-speed" style="margin-top: 10px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+           Run Test
+        </button>
+
+        <div class="cn-dynamic-viz" id="speed-test-viz">
+          <div class="cn-dynamic-node">
+             <div class="cn-dynamic-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div>
+             <div class="cn-dynamic-label">Client</div>
+          </div>
+          <div class="cn-dynamic-track">
+             <div class="cn-dyn-packet p1"></div>
+             <div class="cn-dyn-packet p2"></div>
+             <div class="cn-dyn-packet p3"></div>
+             <div class="cn-dyn-packet p4"></div>
+             <div class="cn-dyn-packet p5"></div>
+          </div>
+          <div class="cn-dynamic-node">
+             <div class="cn-dynamic-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg></div>
+             <div class="cn-dynamic-label">Cloud</div>
+          </div>
+        </div>
+        <div class="speed-results" id="speed-results" style="display:none; margin-top: 24px;">
+          <div class="speed-result-item"><div class="speed-result-value" id="res-dl">—</div><div class="speed-result-label">Download</div></div>
+          <div class="speed-result-item"><div class="speed-result-value" id="res-ul">—</div><div class="speed-result-label">Upload</div></div>
+          <div class="speed-result-item"><div class="speed-result-value" id="res-ping">—</div><div class="speed-result-label">Ping</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Alert Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 

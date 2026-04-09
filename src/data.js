@@ -233,6 +233,9 @@ export class NetworkDataEngine {
     let phase = 'download';
     let progress = 0;
 
+    // Phase 0: Ping (Visual radar phase)
+    await this._animateProgress(onProgress, 'ping', 0, 2000); // 2 seconds radar
+
     // Phase 1: Real download speed measurement
     onProgress({ phase: 'download', progress: 5, currentSpeed: 0 });
 
@@ -265,10 +268,11 @@ export class NetworkDataEngine {
     };
   }
 
-  async _animateProgress(onProgress, phase, finalSpeed) {
+  async _animateProgress(onProgress, phase, finalSpeed, customDuration = null) {
     return new Promise(resolve => {
       const startTime = Date.now();
-      const duration = 5000 + Math.random() * 2000; // 5 to 7 seconds per phase
+      const duration = customDuration || (10000 + Math.random() * 5000); // 10 to 15 seconds per phase
+
       
       const interval = setInterval(() => {
         const elapsed = Date.now() - startTime;

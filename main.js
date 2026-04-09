@@ -2,7 +2,7 @@ import './style.css';
 import { NetworkDataEngine } from './src/data.js';
 import { icons, navItems } from './src/icons.js';
 import { createLineChart, createDualLineChart, createBarChart, createDoughnutChart, updateChartData, updateDualChart } from './src/charts.js';
-import { renderDashboard, renderSpeedTest, renderBandwidth, renderPacketLoss } from './src/pages1.js';
+import { renderDashboard, renderBandwidth, renderPacketLoss } from './src/pages1.js';
 import { renderLatency, renderTopology, renderSystem, drawTopology } from './src/pages2.js';
 
 const engine = new NetworkDataEngine();
@@ -34,6 +34,10 @@ function buildNav() {
 }
 
 function navigate(page) {
+  if (page === 'speedtest') {
+    document.getElementById('speed-test-overlay').classList.remove('hidden');
+    return;
+  }
   currentPage = page;
   destroyCharts();
   cancelAnimationFrame(topoAnimFrame);
@@ -57,7 +61,6 @@ function renderPage() {
 
   switch (currentPage) {
     case 'dashboard': container.innerHTML = renderDashboard(snap); initDashboardCharts(snap); break;
-    case 'speedtest': container.innerHTML = renderSpeedTest(); initSpeedTest(snap); break;
     case 'bandwidth': container.innerHTML = renderBandwidth(snap); initBandwidthCharts(snap); break;
     case 'packetloss': container.innerHTML = renderPacketLoss(snap); initPacketLossCharts(snap); break;
     case 'latency': container.innerHTML = renderLatency(snap); initLatencyCharts(snap); break;
@@ -74,10 +77,30 @@ function initDashboardCharts(snap) {
   charts.sparkPl = createLineChart(el('spark-pl'), 'PL', snap.packetLoss.history, '#ef4444');
   charts.bandwidth = createDualLineChart(el('chart-bandwidth'), 'Download', snap.download.history, 'Upload', snap.upload.history);
   charts.latjit = createDualLineChart(el('chart-latjit'), 'Latency', snap.latency.history, 'Jitter', snap.jitter.history);
+  
+  document.getElementById('btn-dashboard-speedtest')?.addEventListener('click', () => {
+    document.getElementById('speed-test-overlay').classList.remove('hidden');
+  });
 }
 
-function initSpeedTest(snap) {
+function initSpeedTest() {
   document.getElementById('btn-run-speed')?.addEventListener('click', runSpeedTest);
+  
+  document.getElementById('btn-close-speed')?.addEventListener('click', () => {
+    document.getElementById('speed-test-overlay').classList.add('hidden');
+    // Reset gauge when closing
+    const arc = document.getElementById('gauge-arc');
+    if (arc) arc.style.strokeDashoffset = '267';
+    const needle = document.getElementById('gauge-needle');
+    if (needle) needle.style.transform = 'rotate(-90deg)';
+    document.getElementById('ping-radar').style.display = 'none';
+
+    document.getElementById('gauge-val').textContent = '0';
+    document.getElementById('gauge-phase').textContent = 'Ready';
+    document.getElementById('speed-results').style.display = 'none';
+    const viz = document.getElementById('speed-test-viz');
+    if (viz) viz.className = 'cn-dynamic-viz';
+  });
 }
 
 function runSpeedTest() {
@@ -89,17 +112,60 @@ function runSpeedTest() {
     const arc = document.getElementById('gauge-arc');
     const val = document.getElementById('gauge-val');
     const lbl = document.getElementById('gauge-phase');
-    if (arc) arc.style.strokeDashoffset = 534 - (534 * progress / 100);
+    const viz = document.getElementById('speed-test-viz');
+    const radar = document.getElementById('ping-radar');
+    const needle = document.getElementById('gauge-needle');
+    
+    // Ping Phase Handle
+    if (phase === 'ping') {
+      if (lbl) lbl.textContent = `Connecting & Pinging...`;
+      if (radar) radar.style.display = 'block';
+      if (val) val.textContent = '—';
+      if (arc) arc.style.strokeDashoffset = '267'; // Keep gauge empty
+      if (needle) needle.style.transform = 'rotate(-90deg)';
+      if (viz) viz.className = 'cn-dynamic-viz';
+      return;
+    }
+    
+    // Hide radar when past ping
+    if (radar) radar.style.display = 'none';
+
+    // RPM Speedometer Physics (Max visual scale set to 100 Mbps)
+    const MAX_SPEED = 100;
+    let speedPercent = Math.min((currentSpeed / MAX_SPEED) * 100, 100);
+    let needleAngle = (speedPercent * 1.8) - 90;
+
+    // Shift dial color dynamically (0=Red, 120=Green)
+    const hue = Math.floor(speedPercent * 1.2);
+    const startGrad = document.getElementById('gauge-grad-start');
+    const endGrad = document.getElementById('gauge-grad-end');
+    if (startGrad && endGrad) {
+      startGrad.setAttribute('stop-color', `hsl(${Math.max(0, hue-20)}, 90%, 55%)`);
+      endGrad.setAttribute('stop-color', `hsl(${hue}, 90%, 50%)`);
+    }
+
+    if (arc) arc.style.strokeDashoffset = 267 - (267 * speedPercent / 100);
+    if (needle) needle.style.transform = `rotate(${needleAngle}deg)`;
     if (val) val.textContent = currentSpeed.toFixed(1);
     if (lbl) lbl.textContent = `${phase === 'download' ? '↓ Downloading' : '↑ Uploading'}... ${progress.toFixed(0)}%`;
+    if (viz) viz.className = 'cn-dynamic-viz active phase-' + phase;
+
   }).then(result => {
     document.getElementById('gauge-val').textContent = result.download.toFixed(1);
     document.getElementById('gauge-phase').textContent = 'Test Complete';
-    document.getElementById('gauge-arc').style.strokeDashoffset = '0';
+    
+    // Set gauge to final download speed position
+    const finalSpeedPercent = Math.min((result.download / 100) * 100, 100);
+    document.getElementById('gauge-arc').style.strokeDashoffset = 267 - (267 * finalSpeedPercent / 100);
+    const needle = document.getElementById('gauge-needle');
+    if (needle) needle.style.transform = `rotate(${(finalSpeedPercent * 1.8) - 90}deg)`;
     document.getElementById('speed-results').style.display = '';
     document.getElementById('res-dl').textContent = result.download.toFixed(1) + ' Mbps';
     document.getElementById('res-ul').textContent = result.upload.toFixed(1) + ' Mbps';
     document.getElementById('res-ping').textContent = result.ping.toFixed(1) + ' ms';
+    
+    const viz = document.getElementById('speed-test-viz');
+    if (viz) viz.className = 'cn-dynamic-viz';
 
     if (btn) { btn.disabled = false; btn.innerHTML = `${icons.play} Run Test`; }
     showToast(`Speed test complete — ${result.download.toFixed(1)} ↓ / ${result.upload.toFixed(1)} ↑ Mbps`, 'success');
@@ -207,6 +273,7 @@ function init() {
 
   buildNav();
   renderPage();
+  initSpeedTest();
   updateClock();
   setInterval(updateClock, 1000);
   tickInterval = setInterval(tick, 2000);

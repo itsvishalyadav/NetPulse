@@ -122,18 +122,21 @@ export function drawTopology(canvas, hosts) {
   ];
 
   // Draw connections
+  const time = Date.now();
   nodes.slice(1).forEach(n => {
     ctx.beginPath();
     ctx.moveTo(nodes[0].x, nodes[0].y);
     ctx.lineTo(n.x, n.y);
     ctx.strokeStyle = dark ? 'rgba(99,102,241,0.2)' : 'rgba(99,102,241,0.15)';
     ctx.lineWidth = 1.5;
-    ctx.setLineDash([6, 4]);
+    ctx.setLineDash([8, 6]);
+    ctx.lineDashOffset = -(time / 50) % 14; // Flowing data effect
     ctx.stroke();
     ctx.setLineDash([]);
+    ctx.lineDashOffset = 0;
 
     // animated packet dot
-    const t = (Date.now() % 2000) / 2000;
+    const t = (time % 2000) / 2000;
     const px = nodes[0].x + (n.x - nodes[0].x) * t;
     const py = nodes[0].y + (n.y - nodes[0].y) * t;
     ctx.beginPath();
@@ -144,6 +147,14 @@ export function drawTopology(canvas, hosts) {
 
   // Draw nodes
   nodes.forEach(n => {
+    // Breathing shadow for online
+    if (n.status === 'online' || n.type === 'router') {
+      ctx.shadowBlur = 15 + Math.sin(time / 200) * 5;
+      ctx.shadowColor = n.color;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+
     ctx.beginPath();
     ctx.arc(n.x, n.y, 22, 0, Math.PI * 2);
     ctx.fillStyle = dark ? '#1a1f35' : '#fff';
@@ -151,6 +162,7 @@ export function drawTopology(canvas, hosts) {
     ctx.lineWidth = 2.5;
     ctx.fill();
     ctx.stroke();
+    ctx.shadowBlur = 0; // reset shadow
 
     // inner icon dot
     ctx.beginPath();
