@@ -76,7 +76,7 @@ export class NetworkDataEngine {
   async measureRealDownloadSpeed() {
     // Download a known file and measure throughput
     const testFiles = [
-      { url: 'https://speed.cloudflare.com/__down?bytes=500000', size: 500000 },
+      { url: 'https://speed.cloudflare.com/__down?bytes=5000000', size: 5000000 },
       { url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png', size: 13504 },
     ];
 
