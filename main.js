@@ -224,6 +224,8 @@ function tick() {
     // Update stat values
     updateText('stat-dl', '.stat-card-value', snap.download.current.toFixed(1));
     updateText('stat-ul', '.stat-card-value', snap.upload.current.toFixed(1));
+    updateText('stat-lat', '.stat-card-value', snap.latency.current.toFixed(1));
+    updateText('stat-pl', '.stat-card-value', snap.packetLoss.current.toFixed(2) + '%');
   }
   if (currentPage === 'bandwidth') {
     updateDualChart(charts.bwDual, snap.download.history, snap.upload.history);
