@@ -92,14 +92,7 @@ export function renderBandwidth(snap) {
       <div class="panel-header"><div class="panel-title">${icons.activity} Download vs Upload Bandwidth</div></div>
       <div class="panel-body"><div class="chart-container chart-container-lg"><canvas id="chart-bw-dual"></canvas></div></div>
     </div>
-    <div class="panel grid-col-2">
-      <div class="panel-header"><div class="panel-title">${icons.download} Traffic by Protocol</div></div>
-      <div class="panel-body"><div class="chart-container"><canvas id="chart-bw-bar"></canvas></div></div>
-    </div>
-    <div class="panel grid-col-2">
-      <div class="panel-header"><div class="panel-title">${icons.shield} Protocol Distribution</div></div>
-      <div class="panel-body"><div class="chart-container"><canvas id="chart-proto"></canvas></div></div>
-    </div>
+
   </div>`;
 }
 

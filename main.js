@@ -175,8 +175,6 @@ function runSpeedTest() {
 function initBandwidthCharts(snap) {
   const el = id => document.getElementById(id)?.getContext('2d');
   charts.bwDual = createDualLineChart(el('chart-bw-dual'), 'Download', snap.download.history, 'Upload', snap.upload.history);
-  charts.bwBar = createBarChart(el('chart-bw-bar'), ['HTTP','HTTPS','DNS','SSH','FTP','Other'], [42,31,8,6,3,10]);
-  charts.proto = createDoughnutChart(el('chart-proto'), ['TCP','UDP','ICMP','Other'], [68,22,6,4]);
 }
 
 function initPacketLossCharts(snap) {
