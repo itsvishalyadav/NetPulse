@@ -258,7 +258,7 @@ function runSimLatency() {
   const sEnd = document.getElementById('stat-lat-end');
   const srvNode = document.getElementById('arena-lat').querySelector('.server');
 
-  log.textContent = "1. Client sends ICMP Ping. Propagating...";
+  log.textContent = "1. Client sends TCP Ping. Propagating...";
   const startTime = Date.now();
   sStart.textContent = startTime.toString().slice(-6) + " ms";
   sEnd.textContent = "—";
