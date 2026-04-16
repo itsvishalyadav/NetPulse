@@ -14,24 +14,6 @@ export function renderLatency(snap) {
   </div>`;
 }
 
-export function renderTopology(snap) {
-  return `
-  <div class="dashboard-grid">
-    <div class="panel grid-col-4">
-      <div class="panel-header"><div class="panel-title">${icons.network} Network Topology Map</div><div class="panel-actions"><button class="btn btn-secondary btn-sm" id="btn-refresh-topo">${icons.activity} Refresh</button></div></div>
-      <div class="panel-body"><canvas id="topology-canvas" class="topology-canvas"></canvas></div>
-    </div>
-    <div class="panel grid-col-4">
-      <div class="panel-header"><div class="panel-title">${icons.server} Connected Devices</div></div>
-      <div class="panel-body">
-        <table class="data-table"><thead><tr><th>Device</th><th>IP Address</th><th>Type</th><th>Status</th><th>Latency</th></tr></thead>
-          <tbody>${snap.hosts.map((h, i) => `<tr><td class="fw-600">${h.name}</td><td class="mono">${h.ip}</td><td><span class="tag tag-info">${h.type}</span></td><td><span class="tag ${h.status==='online'?'tag-success':'tag-warning'}">${h.status}</span></td><td class="mono">${fmt(2 + i * 3.2 + Math.random()*2)} ms</td></tr>`).join('')}</tbody>
-        </table>
-      </div>
-    </div>
-  </div>`;
-}
-
 export function renderSystem(snap) {
   const s = snap.system;
   const bars = [
@@ -97,88 +79,10 @@ export function renderSettings() {
       <div class="panel-body">
         <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.8">
           <strong>NetPulse</strong> is a comprehensive Network Performance Monitoring System built for educational purposes as a Computer Network project. Inspired by <a href="https://github.com/autobrr/netronome" target="_blank">Netronome</a>, it provides real-time network metrics, speed testing, packet loss analysis, traceroute visualization, system health monitoring, and alerting — all through a beautiful, modern web dashboard.<br/><br/>
-          <strong>Key Features:</strong> Real-time bandwidth monitoring · Speed testing with gauge visualization · Packet loss & traceroute hop analysis · Network topology mapping · System resource monitoring · Configurable alerts & notifications · Dark/Light theme · Responsive design
+          <strong>Key Features:</strong> Real-time bandwidth monitoring · Speed testing with gauge visualization · Packet loss & traceroute hop analysis · System resource monitoring · Configurable alerts & notifications · Dark/Light theme · Responsive design
         </p>
       </div>
     </div>
   </div>`;
 }
 
-export function drawTopology(canvas, hosts) {
-  const ctx = canvas.getContext('2d');
-  const W = canvas.width = canvas.offsetWidth;
-  const H = canvas.height = canvas.offsetHeight;
-  const dark = document.documentElement.getAttribute('data-theme') !== 'light';
-  ctx.clearRect(0, 0, W, H);
-
-  const cx = W / 2, cy = H / 2;
-  const nodes = [
-    { x: cx, y: cy, label: 'Gateway Router', type: 'router', color: '#6366f1' },
-    ...hosts.filter(h => h.type !== 'router').map((h, i, arr) => {
-      const angle = (i / arr.length) * Math.PI * 2 - Math.PI / 2;
-      const r = Math.min(W, H) * 0.32;
-      return { x: cx + Math.cos(angle) * r, y: cy + Math.sin(angle) * r, label: h.name, type: h.type, color: h.status === 'online' ? '#22c55e' : '#f59e0b', ip: h.ip };
-    }),
-  ];
-
-  // Draw connections
-  const time = Date.now();
-  nodes.slice(1).forEach(n => {
-    ctx.beginPath();
-    ctx.moveTo(nodes[0].x, nodes[0].y);
-    ctx.lineTo(n.x, n.y);
-    ctx.strokeStyle = dark ? 'rgba(99,102,241,0.2)' : 'rgba(99,102,241,0.15)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([8, 6]);
-    ctx.lineDashOffset = -(time / 50) % 14; // Flowing data effect
-    ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.lineDashOffset = 0;
-
-    // animated packet dot
-    const t = (time % 2000) / 2000;
-    const px = nodes[0].x + (n.x - nodes[0].x) * t;
-    const py = nodes[0].y + (n.y - nodes[0].y) * t;
-    ctx.beginPath();
-    ctx.arc(px, py, 3, 0, Math.PI * 2);
-    ctx.fillStyle = '#6366f1';
-    ctx.fill();
-  });
-
-  // Draw nodes
-  nodes.forEach(n => {
-    // Breathing shadow for online
-    if (n.status === 'online' || n.type === 'router') {
-      ctx.shadowBlur = 15 + Math.sin(time / 200) * 5;
-      ctx.shadowColor = n.color;
-    } else {
-      ctx.shadowBlur = 0;
-    }
-
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 22, 0, Math.PI * 2);
-    ctx.fillStyle = dark ? '#1a1f35' : '#fff';
-    ctx.strokeStyle = n.color;
-    ctx.lineWidth = 2.5;
-    ctx.fill();
-    ctx.stroke();
-    ctx.shadowBlur = 0; // reset shadow
-
-    // inner icon dot
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, 8, 0, Math.PI * 2);
-    ctx.fillStyle = n.color;
-    ctx.fill();
-
-    // label
-    ctx.font = '600 11px Inter, sans-serif';
-    ctx.fillStyle = dark ? '#f1f5f9' : '#0f172a';
-    ctx.textAlign = 'center';
-    ctx.fillText(n.label, n.x, n.y + 38);
-    if (n.ip) {
-      ctx.font = '400 9px JetBrains Mono, monospace';
-      ctx.fillStyle = dark ? '#64748b' : '#94a3b8';
-      ctx.fillText(n.ip, n.x, n.y + 50);
-    }
-  });
-}

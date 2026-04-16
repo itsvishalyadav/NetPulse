@@ -3,13 +3,13 @@ import { NetworkDataEngine } from './src/data.js';
 import { icons, navItems } from './src/icons.js';
 import { createLineChart, createDualLineChart, createBarChart, createDoughnutChart, updateChartData, updateDualChart } from './src/charts.js';
 import { renderDashboard, renderBandwidth, renderPacketLoss } from './src/pages1.js';
-import { renderLatency, renderTopology, renderSystem, drawTopology } from './src/pages2.js';
+import { renderLatency, renderSystem } from './src/pages2.js';
+import { renderHowItWorks, initHowItWorks, cleanupSimulations } from './src/howitworks.js';
 
 const engine = new NetworkDataEngine();
 let currentPage = 'dashboard';
 let charts = {};
 let tickInterval = null;
-let topoAnimFrame = null;
 
 // --- Toast ---
 function showToast(msg, type = 'info') {
@@ -40,7 +40,7 @@ function navigate(page) {
   }
   currentPage = page;
   destroyCharts();
-  cancelAnimationFrame(topoAnimFrame);
+  cleanupSimulations();
   buildNav();
   renderPage();
   document.getElementById('page-title').textContent = navItems.find(i => i.id === page)?.label || 'Dashboard';
@@ -64,7 +64,7 @@ function renderPage() {
     case 'bandwidth': container.innerHTML = renderBandwidth(snap); initBandwidthCharts(snap); break;
     case 'packetloss': container.innerHTML = renderPacketLoss(snap); initPacketLossCharts(snap); break;
     case 'latency': container.innerHTML = renderLatency(snap); initLatencyCharts(snap); break;
-    case 'topology': container.innerHTML = renderTopology(snap); initTopology(snap); break;
+    case 'howitworks': container.innerHTML = renderHowItWorks(); initHowItWorks(); break;
   }
 }
 
@@ -190,16 +190,6 @@ function initLatencyCharts(snap) {
   charts.jitHist = createLineChart(el('chart-jit-hist'), 'Jitter (ms)', snap.jitter.history, '#f59e0b');
 }
 
-function initTopology(snap) {
-  const canvas = document.getElementById('topology-canvas');
-  if (!canvas) return;
-  function animate() {
-    drawTopology(canvas, snap.hosts);
-    topoAnimFrame = requestAnimationFrame(animate);
-  }
-  animate();
-  document.getElementById('btn-refresh-topo')?.addEventListener('click', () => showToast('Topology refreshed', 'info'));
-}
 
 function initSystemCharts(snap) {
   const el = id => document.getElementById(id)?.getContext('2d');

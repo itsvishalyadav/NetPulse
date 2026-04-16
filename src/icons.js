@@ -26,6 +26,7 @@ export const icons = {
   server: s('<rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/>'),
   router: s('<rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="6.01" y2="12"/><line x1="10" y1="12" x2="10.01" y2="12"/><path d="M2 10h20"/>'),
   cloud: s('<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>'),
+  book: s('<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>'),
 };
 
 export const navItems = [
@@ -36,6 +37,6 @@ export const navItems = [
   { id: 'bandwidth', label: 'Bandwidth', icon: 'activity' },
   { id: 'packetloss', label: 'Packet Loss', icon: 'packet' },
   { id: 'latency', label: 'Latency & Jitter', icon: 'latency' },
-  { section: 'Infrastructure' },
-  { id: 'topology', label: 'Network Map', icon: 'network' }
+  { section: 'Education' },
+  { id: 'howitworks', label: 'How It Works', icon: 'book' }
 ];
